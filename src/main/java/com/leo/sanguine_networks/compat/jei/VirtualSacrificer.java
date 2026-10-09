@@ -67,7 +67,7 @@ public class VirtualSacrificer implements IRecipeCategory<ModelRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 4, 4).setSlotName("model").addItemStacks(models);
 
         List<ItemStack> catalysts = new ArrayList<>();
-        catalysts.add(null); // A blank cycle shows the unboosted recipe: catalysts are optional.
+        catalysts.add(ItemStack.EMPTY); // A blank cycle shows the unboosted recipe: catalysts are optional.
         for (var holder : Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(CatalystRecipe.Type.INSTANCE)) {
             catalysts.addAll(List.of(holder.getInput().getItems()));
         }
@@ -93,14 +93,15 @@ public class VirtualSacrificer implements IRecipeCategory<ModelRecipe> {
     }
 
     private void updateDisplay(ModelRecipe recipe, List<IRecipeSlotDrawable> slots) {
-        if (slots.isEmpty()) return;
-        long frame = Minecraft.getInstance().level.getGameTime() / 50;
-        if (java.util.Objects.equals(displayedFrames.put(slots.get(0), frame), frame)) return;
-        var tier = displayedTier();
-        float multiplier = 1;
-        for (var slot : slots) {
-            if (slot.getSlotName().orElse("").equals("catalyst")) {
-                var stack = slot.getDisplayedItemStack().orElse(ItemStack.EMPTY);
+    if (slots.isEmpty()) return;
+    long frame = Minecraft.getInstance().level.getGameTime() / 50;
+    if (java.util.Objects.equals(displayedFrames.put(slots.get(0), frame), frame)) return;
+    var tier = displayedTier();
+    float multiplier = 1;
+    for (var slot : slots) {
+        if (slot.getSlotName().orElse("").equals("catalyst")) {
+            var stack = slot.getDisplayedItemStack().orElse(ItemStack.EMPTY);
+            if (!stack.isEmpty()) {
                 for (var holder : Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(CatalystRecipe.Type.INSTANCE)) {
                     if (holder.getInput().test(stack)) {
                         multiplier = holder.getMultiplier();
@@ -109,27 +110,28 @@ public class VirtualSacrificer implements IRecipeCategory<ModelRecipe> {
                 }
             }
         }
-        for (var slot : slots) {
-            switch (slot.getSlotName().orElse("")) {
-                case "model" -> {
-                    // Clear the override before reading, preserving JEI's focused model/variant.
-                    slot.clearDisplayOverrides();
-                    slot.getDisplayedItemStack().ifPresent(original -> {
-                        ItemStack stack = original.copy();
-                        var model = DataModelItem.getStoredModel(stack);
-                        if (model.isBound()) DataModelItem.setData(stack, model.get().getTierData(tier));
-                        slot.createDisplayOverrides().addItemStack(stack);
-                    });
-                }
-                case "blood" -> {
-                    int amount = (int) (recipe.getBlood(tier) * multiplier);
-                    slot.clearDisplayOverrides();
-                    var overrides = slot.createDisplayOverrides();
-                    if (amount > 0) overrides.addFluidStack(BloodMagicFluids.LIFE_ESSENCE_FLUID.get(), amount);
-                }
+    }
+    for (var slot : slots) {
+        switch (slot.getSlotName().orElse("")) {
+            case "model" -> {
+                // Clear the override before reading, preserving JEI's focused model/variant.
+                slot.clearDisplayOverrides();
+                slot.getDisplayedItemStack().ifPresent(original -> {
+                    ItemStack stack = original.copy();
+                    var model = DataModelItem.getStoredModel(stack);
+                    if (model.isBound()) DataModelItem.setData(stack, model.get().getTierData(tier));
+                    slot.createDisplayOverrides().addItemStack(stack);
+                });
+            }
+            case "blood" -> {
+                int amount = (int) (recipe.getBlood(tier) * multiplier);
+                slot.clearDisplayOverrides();
+                var overrides = slot.createDisplayOverrides();
+                if (amount > 0) overrides.addFluidStack(BloodMagicFluids.LIFE_ESSENCE_FLUID.get(), amount);
             }
         }
     }
+}
 
     @Override
     public void draw(ModelRecipe recipe, IRecipeSlotsView slots, GuiGraphics graphics, double mouseX, double mouseY) {

@@ -59,8 +59,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         CatalystRecipe.create(Ingredient.of(Hostile.Items.NETHER_PREDICTION.get()), 25, 1.75f).save(pWriter);
         CatalystRecipe.create(Ingredient.of(Hostile.Items.END_PREDICTION.get()), 50, 2.25f).save(pWriter);
         CatalystRecipe.create(Ingredient.of(Hostile.Items.TWILIGHT_PREDICTION.get()), 50, 2f).save(pWriter);
-        CatalystRecipe.create(Ingredient.of(Items.NETHER_STAR), 100, 5f).save(pWriter);
-        CatalystRecipe.create(Ingredient.of(Items.BARRIER), -1, 5f).save(pWriter);
+        CatalystRecipe.create(Ingredient.of(Items.NETHER_STAR), 100, 5f).save(pWriter);        
+        CatalystRecipe.create(Ingredient.of(ForgeRegistries.ITEMS.getValue(new ResourceLocation("evilcraft", "condensed_blood"))), 100, 5f).save(pWriter);
 
         ModelRecipe.create(new ResourceLocation("minecraft:blaze"), getBlood(250), 1000).save(pWriter);
         ModelRecipe.create(new ResourceLocation("minecraft:wither_skeleton"), getBlood(250), 1000).save(pWriter);
