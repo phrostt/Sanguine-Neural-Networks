@@ -3,6 +3,10 @@
 Virtual Sacrificers produce Blood Magic Life Essence from Hostile Neural Networks models. This branch uses Blood Magic; the NeoForge 1.21.1 branch uses Neo Vitae and includes Suffering Incorporated. The multiblock and its ports are not included here.
 
 ## Dependencies
+Forked version for ATM9 expert
+
+
+## Dependencies
 
 - Minecraft 1.20.1 / Forge 47
 - HNN 5.3.3 and Placebo 8.6.3
