@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import wayoftime.bloodmagic.common.item.BloodMagicItems;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Consumer;
 
