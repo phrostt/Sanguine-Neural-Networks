@@ -97,7 +97,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ModelRecipe.create(new ResourceLocation("minecraft:elder_guardian"), getBlood(1000), 2500).save(pWriter);
         ModelRecipe.create(new ResourceLocation("minecraft:iron_golem"), getBlood(1000), 2500).save(pWriter);
         ModelRecipe.create(new ResourceLocation("minecraft:warden"), getBlood(1500), 3000).save(pWriter);
-
     }
 
     private int[] getBlood(int base) {
